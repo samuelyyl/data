@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KG</title>
+    <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        /* 基本样式 */
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            border: 2px solid #3498db;
+            color: #3498db;
+            background-color: #ffffff;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            margin: 2px;
+        }
+
+        /* 鼠标悬停时的样式 */
+        button:hover {
+            background-color: #3498db;
+            color: #ffffff;
+        }
+
+        /* 激活（点击）时的样式 */
+        button:active {
+            transform: translateY(2px);
+        }
+
+        /* 自定义点击后的样式 */
+        button.clicked {
+            background-color: #28a745; /* 自定义点击后的背景颜色 */
+            color: #ffffff; /* 自定义点击后的文本颜色 */
+        }
+
+        /* 基本样式 */
+        input[type="number"] {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: text; /* 将光标样式设为文本输入样式 */
+            border: 2px solid #3498db;
+            color: #3498db;
+            background-color: #ffffff;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            margin: 2px;
+        }
+
+        /* 鼠标悬停时的样式 */
+        input[type="number"]:hover {
+            background-color: #3498db;
+            color: #ffffff;
+        }
+
+        /* 激活（点击）时的样式 */
+        input[type="number"]:active {
+            transform: translateY(2px);
+        }
+
+        /* 如果需要自定义点击后的样式，可以添加类似于按钮的 clicked 类 */
+        /* 例如： */
+        /* input[type="text"].clicked {
+            background-color: #28a745;
+            color: #ffffff;
+        } */
+        input[type="number"]::placeholder {
+            font-size: 16px; /* 文本大小 */
+            font-weight: bold; /* 文本粗细 */
+            color: #999; /* 设置为灰色 */
+        }
+    </style>
+</head>
+<body>
+<div id="chart-canvas" style="width: 100%;height:600px;margin-top: 60px"></div>
+<div id="buttons-box" style="text-align: center">
+
+</div>
+</body>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/echarts.common.min.js"></script>
+<script type="text/javascript" src="./js/ecStat.min.js"></script>
+<script type="text/javascript" src="./js/index.min.js"></script>
+
+
+
+</html>
