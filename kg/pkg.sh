@@ -1,5 +1,4 @@
 #!/bin/bash
-
-workdir=$(cd $(dirname $0); pwd)
-echo $workdir
+cd $(dirname $0)
+pwd
 webpack --config  ./webpack.config.js
