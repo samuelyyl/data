@@ -1,6 +1,14 @@
 const JavaScriptObfuscator = require('webpack-obfuscator');
 const path = require('path');
-
+class PrintLineHtmlPlugin {
+    apply(compiler) {
+        compiler.hooks.done.tap('PrintLineHtmlPlugin', () => {
+            const htmlPath = path.resolve(__dirname, 'line.html');
+            console.log('\n✅ Build 完成！打开 HTML:');
+            console.log(`file://${htmlPath}\n`);
+        });
+    }
+}
 module.exports = {
     entry: './src/index.js', // 入口文件
     mode: 'development', // 设置开发模式
@@ -19,6 +27,7 @@ module.exports = {
             stringArrayEncoding: ['base64'] // JSON/CSV里的字符串会被编码
             // 在这里可以添加更多的混淆选项
         }, ['excluded_bundle_name.js'])
+        ,  new PrintLineHtmlPlugin()
     ],
     module: {
         rules: [
