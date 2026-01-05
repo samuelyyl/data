@@ -2,3 +2,5 @@
 /kg/src/
 /kg/node_modules
 .DS_Store
+.env
+**/.env
