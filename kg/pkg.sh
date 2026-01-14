@@ -1,4 +1,5 @@
 #!/bin/bash
 cd $(dirname $0)
 pwd
-npm run build
+source .env
+ENCRYPT_PASSWORD=$ENCRYPT_PASSWORD npm run build
