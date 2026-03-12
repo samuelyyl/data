@@ -1,5 +1,7 @@
 /.idea
-/kg/src/
+/kg/src/x.js
+/kg/src/y.js
+/kg/src/history.js
 /kg/node_modules
 .DS_Store
 .env
