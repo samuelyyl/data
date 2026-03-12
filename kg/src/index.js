@@ -214,7 +214,9 @@ function getData(search) {
 
         const color = seriesSetting.colorList[index];
         const name = seriesSetting.names[index];
-        return [
+
+        // Build series array - always include main series
+        const seriesArray = [
             {
                 name: name,
                 data: subD.map(d => d[1]),
@@ -222,8 +224,12 @@ function getData(search) {
                 smooth: true,
                 color: color,
                 connectNulls: false  // Break line at null values
-            },
-            {
+            }
+        ];
+
+        // Only add da7 series if button is ON
+        if (showDa7) {
+            seriesArray.push({
                 name: name + ':da7',
                 data: subDN,
                 type: 'line',
@@ -234,8 +240,12 @@ function getData(search) {
                 smooth: true,
                 color: color,
                 connectNulls: false  // Break line at null values
-            },
-            {
+            });
+        }
+
+        // Only add regression series if button is ON
+        if (showRegression) {
+            seriesArray.push({
                 name: name + ':regression',
                 type: 'line',
                 smooth: true,
@@ -267,13 +277,44 @@ function getData(search) {
                         coord: [subDFilled.length - 1, myRegression.parameter.gradient * new Date(subDFilled[subDFilled.length - 1][0]).getTime() + myRegression.parameter.intercept]
                     }]
                 }
-            }
-        ];
+            });
+        }
+
+        return seriesArray;
     });
     return {xAxis: xAxis, series: series};
 }
 
 let myChart = echarts.init(document.getElementById('chart-canvas'));
+
+// Add legend click event to control related series together
+myChart.on('legendselectchanged', function (params) {
+    const clickedName = params.name;
+    const isSelected = params.selected[clickedName];
+
+    // If clicked on X or Y, also toggle their da7 and regression series
+    if (clickedName === 'X' || clickedName === 'Y') {
+        seriesSetting.selected[clickedName] = isSelected;
+
+        // Only sync da7/regression if their buttons are ON (data exists)
+        if (showDa7) {
+            seriesSetting.selected[clickedName + ':da7'] = isSelected;
+        }
+        if (showRegression) {
+            seriesSetting.selected[clickedName + ':regression'] = isSelected;
+        }
+
+        // Update chart with new selection state
+        myChart.setOption({
+            legend: {
+                selected: seriesSetting.selected
+            }
+        });
+    } else {
+        // For da7 and regression series, just update the state
+        seriesSetting.selected[clickedName] = isSelected;
+    }
+});
 
 const currentYear = new Date().getFullYear();
 const buttonTexts = [];
@@ -348,7 +389,13 @@ da7Toggle.addEventListener('click', function () {
     }
     seriesSetting.selected['X:da7'] = showDa7;
     seriesSetting.selected['Y:da7'] = showDa7;
-    myChart.setOption({ legend: { selected: seriesSetting.selected } });
+    // Refresh chart to regenerate data
+    const activeButton = document.querySelector('#buttons-box .clicked:not(#fill-toggle):not(#da7-toggle):not(#regression-toggle)');
+    if (activeButton) {
+        refreshButton(activeButton);
+    } else {
+        refreshButton();
+    }
 });
 buttonsBox.appendChild(da7Toggle);
 
@@ -369,7 +416,13 @@ regressionToggle.addEventListener('click', function () {
     }
     seriesSetting.selected['X:regression'] = showRegression;
     seriesSetting.selected['Y:regression'] = showRegression;
-    myChart.setOption({ legend: { selected: seriesSetting.selected } });
+    // Refresh chart to regenerate data
+    const activeButton = document.querySelector('#buttons-box .clicked:not(#fill-toggle):not(#da7-toggle):not(#regression-toggle)');
+    if (activeButton) {
+        refreshButton(activeButton);
+    } else {
+        refreshButton();
+    }
 });
 buttonsBox.appendChild(regressionToggle);
 
