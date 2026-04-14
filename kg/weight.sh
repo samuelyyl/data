@@ -80,5 +80,12 @@ bash pkg.sh
 
 echo "✅ 编译完成"
 
-echo "提交 Git"
-git add . && git commit -m "update data" && git push
+read "confirm?是否提交 Git？(y/n, 默认 y): "
+confirm=${confirm:-y}
+
+if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+  echo "提交 Git"
+  git add . && git commit -m "update data" && git push
+else
+  echo "已跳过 Git 提交"
+fi
