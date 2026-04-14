@@ -1,7 +1,5 @@
 #!/bin/zsh
-echo "提交 Git"
-git add . && git commit -m "update data" && git push
-exit 0
+
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 # ===== 1. 选择文件 =====
