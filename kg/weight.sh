@@ -222,7 +222,7 @@ bash "$SCRIPT_DIR/pkg.sh"
 echo "✅ 编译完成"
 
 read "confirm?是否提交 Git（仅构建产物，不含数据文件）？(y/n, 默认 y): "
-confirm=${confirm:-n}
+confirm=${confirm:-y}
 
 if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
   echo "提交 Git"
