@@ -159,7 +159,7 @@ elif [[ $diff_days -lt 0 ]]; then
   echo "最后记录日期晚于今天，请先检查数据文件"
   exit 1
 
-elif [[ $diff_days -le 5 ]]; then
+elif [[ $diff_days -le 8 ]]; then
   echo "👉 逐天输入（回车跳过）"
 
   for ((i=1; i<=diff_days; i++)); do
