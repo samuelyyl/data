@@ -189,9 +189,11 @@ if [[ ${#new_entries[@]} -eq 0 ]]; then
 fi
 
 # 插入到最后一个 ]; 之前
+entries_file=$(mktemp)
 tmp_file=$(mktemp)
+printf "%s\n" "${new_entries[@]}" > "$entries_file"
 
-awk -v entries="$(printf "%s\n" "${new_entries[@]}")" '
+awk -v entries_file="$entries_file" '
   {
     lines[NR] = $0
     if ($0 ~ /\];/) {
@@ -205,7 +207,10 @@ awk -v entries="$(printf "%s\n" "${new_entries[@]}")" '
 
     for (i = 1; i <= NR; i++) {
       if (i == last) {
-        print entries
+        while ((getline entry < entries_file) > 0) {
+          print entry
+        }
+        close(entries_file)
       }
       print lines[i]
     }
@@ -213,6 +218,7 @@ awk -v entries="$(printf "%s\n" "${new_entries[@]}")" '
 ' "$FILE" > "$tmp_file"
 
 mv "$tmp_file" "$FILE"
+rm -f "$entries_file"
 
 echo "✅ 已追加数据到 $FILE"
 
