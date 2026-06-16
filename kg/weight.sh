@@ -87,6 +87,7 @@ prompt_weight() {
 
 prompt_required_date() {
   local prompt="$1"
+  local today_shortcut="${2:-}"
   local value
 
   while true; do
@@ -98,8 +99,17 @@ prompt_required_date() {
       continue
     fi
 
+    if [[ -n "$today_shortcut" && ( "$value" == "t" || "$value" == "T" ) ]]; then
+      REPLY="$today_shortcut"
+      return 0
+    fi
+
     if ! is_valid_date "$value"; then
-      echo "日期格式无效，请输入 YYYY-MM-DD"
+      if [[ -n "$today_shortcut" ]]; then
+        echo "日期格式无效，请输入 YYYY-MM-DD 或 t"
+      else
+        echo "日期格式无效，请输入 YYYY-MM-DD"
+      fi
       continue
     fi
 
@@ -169,7 +179,7 @@ elif [[ $diff_days -le 8 ]]; then
   done
 
 else
-  prompt_required_date "请输入日期 (YYYY-MM-DD): "
+  prompt_required_date "请输入日期 (YYYY-MM-DD, t=今天): " "$today"
   d="$REPLY"
 
   if (( $(date_to_epoch "$d") <= $(date_to_epoch "$last_date") )); then
